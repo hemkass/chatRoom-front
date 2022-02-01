@@ -13,11 +13,14 @@ function App() {
   const [message, setMessage] = useState("");
   const [messagesSent, setMessagesSent] = useState([]);
   /*  console.log("ma list", messagesSent); */
+
+  /* La fonction pour se connecter et rejoindre une room */
   const connectToRoom = () => {
     socket.emit("join_room", room);
     setLogIn(true);
   };
 
+  /* La fonction pour envoyer les messages */
   const sendMessage = async () => {
     let messageContent = {
       room: room,
@@ -34,6 +37,7 @@ function App() {
     /*  console.log(messagesSent); */
   };
 
+  /* La fonction pour se déconnecter */
   const handleDisconnect = () => {
     let messageContent = {
       room: room,
@@ -43,6 +47,7 @@ function App() {
     setLogIn(false);
   };
 
+  /* connection côté client à socket io */
   useEffect(() => {
     socket = io(PORT, {
       cors: {
@@ -51,6 +56,7 @@ function App() {
     });
   }, [PORT]);
 
+  /* permet de recevoir les messages sur les différentes sessions */
   useEffect(() => {
     socket.on("receive-message", (data) => {
       setMessagesSent([...messagesSent, data]);
